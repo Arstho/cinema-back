@@ -58,6 +58,20 @@ class authController {
       return res.status(400).json({ message: "Login error" });
     }
   }
+  async editUser(req, res) {
+    try {
+      const user = Auth.findByIdAndUpdate(req.params.id, {
+        username: req.body.username,
+        password: req.body.password,
+        role: req.body.role,
+        subscription: req.body.subscription,
+        money: req.body.money,
+        purchasedFilms: req.body.purchasedFilms,
+      });
+    } catch (error) {
+      return res.status(400).json({ message: "Login error" });
+    }
+  }
   async getUsers(req, res) {
     try {
       const users = await Auth.find();

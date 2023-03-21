@@ -23,7 +23,7 @@ module.exports.categoryController = {
   },
   editCat: async (req, res) => {
     try {
-      const cat = await Category.create({
+      const cat = await Category.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
       });
       return res.json(cat);

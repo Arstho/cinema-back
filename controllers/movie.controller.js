@@ -34,7 +34,7 @@ module.exports.movieController = {
   },
   editMovie: async (req, res) => {
     try {
-      const movie = await Movie.create({
+      const movie = await Movie.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         description: req.body.description,
         preview: req.body.preview,

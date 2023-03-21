@@ -23,7 +23,7 @@ module.exports.genreController = {
   },
   editGenre: async (req, res) => {
     try {
-      const genre = await Genre.create({
+      const genre = await Genre.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
       });
       return res.json(genre);
