@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const authRoute = require("./routes/auth.router");
+const authRoute = require("./routes/auth.route");
 const fileUpload = require("express-fileupload");
 
 const app = express();
@@ -23,7 +23,10 @@ app.use(express.static("uploads"));
 
 // Routes
 
-app.use(require("./routes/auth.router"));
+app.use(require("./routes/auth.route"));
+app.use(require("./routes/movie.route"));
+app.use(require("./routes/genre.route"));
+app.use(require("./routes/category.route"));
 
 // app.use("/api/auth", authRoute);
 

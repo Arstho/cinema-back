@@ -7,6 +7,23 @@ const authSchema = mongoose.Schema({
     type: String,
     default: "USER",
   },
+  subscription: {
+    // подписка
+    type: Boolean,
+    default: false,
+  },
+  money: {
+    // количество денег на счету
+    type: Number,
+    default: 0,
+  },
+  purchasedFilms: [
+    // купленные фильмы
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Movie",
+    },
+  ],
 });
 
 const Auth = mongoose.model("Auth", authSchema);
