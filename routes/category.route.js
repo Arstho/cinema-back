@@ -2,10 +2,10 @@ const { Router } = require("express");
 const router = Router();
 const { categoryController } = require("../controllers/category.controller");
 
-router.post("/genre", categoryController.addCat);
-router.patch("/genre:id", categoryController.editCat);
-router.delete("/genre:id", categoryController.deleteCat);
-router.get("/genre", categoryController.getCat);
-router.get("/genre:id", categoryController.getCatById);
+router.post("/category", categoryController.addCat);
+router.patch("/category:id", categoryController.editCat);
+router.delete("/category:id", categoryController.deleteCat);
+router.get("/category", categoryController.getCat);
+router.get("/category:id", categoryController.getCatById);
 
 module.exports = router;
