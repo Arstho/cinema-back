@@ -5,7 +5,6 @@ const movieSchema = mongoose.Schema({
     // имя
     type: String,
     required: true,
-    unique: true,
   },
   description: {
     // описание фильма
@@ -23,13 +22,12 @@ const movieSchema = mongoose.Schema({
     required: true,
   },
   country: String, // страна производства
-  category: [
+  category:
     // категория
     {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Category",
     },
-  ],
   genre: [
     // жанр фильма
     {
@@ -42,9 +40,13 @@ const movieSchema = mongoose.Schema({
   duration: String, // продолжительность
   release: {
     // дата релиза
-    type: Date,
+    type: String,
   },
   raiting: Number, // рейтинг (от 0 до 10)
+  sub: {
+    type: String,
+    default: "Бесплатно",
+  },
 });
 
 const Movie = mongoose.model("Movie", movieSchema);
