@@ -16,6 +16,7 @@ module.exports.movieController = {
         duration: req.body.duration, // продолжительность фильма
         release: req.body.release, // дата релиза
         raiting: req.body.raiting, // рейтинг (от 0 до 10)
+        sub: req.body.sub, // подписка
       });
       return res.json(movie);
     } catch (error) {
