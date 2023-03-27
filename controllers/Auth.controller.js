@@ -11,6 +11,14 @@ const generateAccesToken = (id, username, role) => {
   };
   return jwt.sign(payload, secret, { expiresIn: "7d" });
 };
+const generateAccesSubToken = (id, username, role) => {
+  const payload = {
+    id,
+    username,
+    role,
+  };
+  return jwt.sign(payload, secret, { expiresIn: "30d" });
+};
 
 class authController {
   async registration(req, res) {
@@ -34,7 +42,7 @@ class authController {
         });
       }
       await user.save();
-      const token = generateAccesToken(user._id, user.role, user.username);
+      const token = generateAccesToken(user._id, user.username, user.role);
       return res.json({ token });
     } catch (error) {
       console.log(error.message);
@@ -52,15 +60,21 @@ class authController {
       if (!validPassword) {
         return res.status(400).json({ message: "Введен неверный пароль" });
       }
-      const token = generateAccesToken(user._id, user.role, user.username);
+      if (user.subscription) {
+        const subToken = generateAccesSubToken(user._id, user.username, user.role);
+        const token = generateAccesToken(user._id, user.username, user.role);
+        return res.json({ token, subToken });
+      }
+      const token = generateAccesToken(user._id, user.username, user.role);
       return res.json({ token });
     } catch (error) {
       return res.status(400).json({ message: "Login error" });
     }
   }
+
   async editUser(req, res) {
     try {
-      const user = Auth.findByIdAndUpdate(req.params.id, {
+      const user = await Auth.findByIdAndUpdate(req.params.id, {
         username: req.body.username,
         password: req.body.password,
         role: req.body.role,
@@ -68,23 +82,37 @@ class authController {
         money: req.body.money,
         purchasedFilms: req.body.purchasedFilms,
       });
+      const subToken = generateAccesToken(user._id, user.username, user.role);
+      return res.json({ subToken });
     } catch (error) {
-      return res.status(400).json({ message: "Login error" });
+      return res.status(400).json({ message: error.message });
     }
   }
+
   async getUsers(req, res) {
     try {
       const users = await Auth.find();
       res.json({ users });
     } catch (error) {}
   }
+  async getUserById(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await Auth.findById(id);
+      console.log(user);
+      res.json({ user });
+    } catch (error) {
+      console.log(error.message);
+      return res.status(400).json({ message: error.message });
+    }
+  }
   async deleteUser(req, res) {
     try {
-      const username = req.params;
-      const user = await Auth.findOneAndDelete({ username: username.user });
+      const userId = req.params;
+      const user = await Auth.findOneAndDelete({ userId });
       res.json(user);
     } catch (error) {
-      res.json({ message: "Не удалось удалить" });
+      res.json({ message: error.message });
     }
   }
 }
